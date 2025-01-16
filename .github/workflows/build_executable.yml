@@ -1,0 +1,38 @@
+name: Build Windows Executable
+permissions: write-all
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install PyInstaller and Pillow
+        run: |
+          pip install pyinstaller
+          pip install pillow
+      - name: Run PyInstaller for BDSP_ColorVariation_JSONParser
+        run: |
+          set PYTHONOPTIMIZE=2
+          pyinstaller --onefile --name="BDSP_ColorVariation_JSONParser" --console --icon=images\BDSP_ColorVariation_JSONParser.tga bdsp_colorvariation_jsonparser.py
+      - name: Move Executable from dist to root directory
+        run: |
+          move dist\BDSP_ColorVariation_JSONParser.exe .
+          rd /s /q dist
+        shell: cmd
+      - name: Create Automatic Windows Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: latest
+          prerelease: false
+          title: Latest Build
+          files: BDSP_ColorVariation_JSONParser.exe

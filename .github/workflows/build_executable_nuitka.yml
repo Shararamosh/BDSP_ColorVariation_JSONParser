@@ -1,0 +1,39 @@
+name: Build Windows Executable with Nuitka
+permissions: write-all
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install imageio
+        run: pip install imageio
+      - name: Run Nuitka for BDSP_ColorVariation_JSONParser
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: main
+          script-name: bdsp_colorvariation_jsonparser.py
+          mode: app
+          windows-icon-from-ico: "images/BDSP_ColorVariation_JSONParser.tga"
+      - name: Move Executable from build to root directory
+        run: |
+          move build\BDSP_ColorVariation_JSONParser.exe .
+          rd /s /q build
+        shell: cmd
+      - name: Create Automatic Windows Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: latest-nuitka
+          prerelease: false
+          title: Latest Nuitka Build
+          files: BDSP_ColorVariation_JSONParser.exe

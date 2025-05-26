@@ -32,9 +32,8 @@ jobs:
           output-file: BDSP_ColorVariation_JSONParser
           mode: app
           enable-plugins: tk-inter
+          include-data-dir: src/BDSP_ColorVariation_JSONParser/images=images
           windows-icon-from-ico: "src/BDSP_ColorVariation_JSONParser/images/json_parser.tga"
-          include-data-dir: |
-            src/BDSP_ColorVariation_JSONParser/images=images
       - name: Move Executable from build to root directory
         run: |
           move build\BDSP_ColorVariation_JSONParser.exe .

@@ -11,7 +11,7 @@ from bdsp_json import print_json_color_data
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "."))
 
-from general import init_app, get_resource_path
+from general import init_app
 
 
 def main() -> int | str:
@@ -19,7 +19,7 @@ def main() -> int | str:
     Program for parsing color information from Pokémon BD/SP ColorVariation.json files.
     :return: Status code or string.
     """
-    init_app(get_resource_path(os.path.join("images", "json_parser.tga")))
+    init_app(os.path.join("images", "json_parser.tga"))
     parser = argparse.ArgumentParser(description="Parser for Pokémon BD/SP "
                                                  "ColorVariation.json files.")
     parser.add_argument("input_paths", nargs="*", type=str, default="",

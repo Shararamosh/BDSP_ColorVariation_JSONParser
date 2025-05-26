@@ -32,6 +32,7 @@ def init_app(icon_path: str):
     Initiating app for launch.
     :param icon_path: Path to icon file.
     """
+    sys.tracebacklimit = 0
     logging.basicConfig(format="%(message)s", level=logging.INFO, handlers=[
         RichHandler(level=logging.INFO, console=RICH_CONSOLE, rich_tracebacks=True)])
     root = Tk()

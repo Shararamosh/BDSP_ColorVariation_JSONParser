@@ -1,10 +1,15 @@
 """
-    Script for parsing color information from Pokémon BD/SP ColorVariation.json files.
+    Script containing functions to deal with JSON files from Pokémon BD/SP games.
 """
+# pylint: disable=import-error, wrong-import-position
 import os
 import sys
 import json
-import argparse
+import logging
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "."))
+
+from general import RICH_CONSOLE
 
 
 def print_json_color_data(file_path: str):
@@ -13,21 +18,22 @@ def print_json_color_data(file_path: str):
     :param file_path: Path to JSON file.
     """
     if not os.path.exists(file_path):
-        print("Path does not exist.")
+        logging.warning("Path %s does not exist.", file_path)
         return
     if not os.path.isfile(file_path):
-        print("Path is not a file.")
+        logging.warning("Path %s is not a file.", file_path)
         return
     if not file_path.lower().endswith(".json"):
-        print("Path is not a JSON file.")
+        logging.warning("Path %s is not a JSON file.", file_path)
         return
     with open(file_path, encoding="utf-8") as json_file:
+        RICH_CONSOLE.print(f"{file_path}:")
         json_data = json.load(json_file)
         k = 0
         s = "00"
         while "Property" + s in json_data:
             property_data = json_data["Property" + s][0]
-            print("Property" + s + ":")
+            RICH_CONSOLE.print(f"Property {s}:")
             colors_data = property_data["colors"]
             current_material_index = -1
             for color_data in colors_data:
@@ -35,11 +41,10 @@ def print_json_color_data(file_path: str):
                     c = color_data["channel"]
                     if color_data["materialIndex"] > current_material_index:
                         current_material_index = color_data["materialIndex"]
-                        print("Material Index: " + str(current_material_index) + ".")
+                        RICH_CONSOLE.print(f"Material Index: {current_material_index}.")
                     color_dict = color_data["color"]
                     if color_dict is not None:
-                        color_dict_str = get_color_dict_str(color_dict)
-                        print(f"[{c:d}]: {color_dict_str}.")
+                        RICH_CONSOLE.print(f"[{c:d}]: {get_color_dict_str(color_dict)}.")
             k = k + 1
             if k < 10:
                 s = "0" + str(k)
@@ -62,20 +67,3 @@ def get_color_dict_str(color_dict: dict) -> str:
     hc = hc + format(round(float(color_dict["g"]) * 255.0), "x").upper()
     hc = hc + format(round(float(color_dict["b"]) * 255.0), "x").upper()
     return f"{lc} -> {hc}"
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="BD/SP ColorVariation Parser",
-                                     description="Parser for Pokémon BD/SP "
-                                                 "ColorVariation.json files.")
-    parser.add_argument("input_paths", nargs="*", type=str, default="",
-                        help="Input JSON files")
-    args = parser.parse_args()
-    if len(args.input_paths) < 1:
-        input_path = input("JSON file path: ")
-        print_json_color_data(input_path)
-    else:
-        for input_path in args.input_paths:
-            print(f"{input_path}:")
-            print_json_color_data(input_path)
-    sys.exit(os.EX_OK)

@@ -15,14 +15,15 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
-      - name: Install PyInstaller and Pillow
+      - name: Install PyInstaller and requirements
         run: |
           pip install pyinstaller
           pip install pillow
+          pip install rich
       - name: Run PyInstaller for BDSP_ColorVariation_JSONParser
         run: |
           set PYTHONOPTIMIZE=2
-          pyinstaller --onefile --name="BDSP_ColorVariation_JSONParser" --console --icon=images\BDSP_ColorVariation_JSONParser.tga bdsp_colorvariation_jsonparser.py
+          pyinstaller --onefile --name="BDSP_ColorVariation_JSONParser" --console --icon=src\BDSP_ColorVariation_JSONParser\images\json_parser.tga src\BDSP_ColorVariation_JSONParser\json_parser.py
       - name: Move Executable from dist to root directory
         run: |
           move dist\BDSP_ColorVariation_JSONParser.exe .

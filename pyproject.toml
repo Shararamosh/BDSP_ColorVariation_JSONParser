@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+[project]
+name="BDSP_ColorVariation_JSONParser"
+dynamic = ["version"]
+requires-python = ">= 3.11"
+dependencies = [
+    "pillow",
+    "rich"
+]
+authors = [{name = "Shararamosh"}]
+description = "Console tool for parsing color information from Pokémon BD/SP ColorVariation.json files."
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Utilities"
+]
+readme = "README.MD"
+[project.urls]
+Repository = "https://github.com/Shararamosh/BDSP_ColorVariation_JSONParser.git"
+[project.scripts]
+json_parser = "BDSP_ColorVariation_JSONParser.json_parser:main"

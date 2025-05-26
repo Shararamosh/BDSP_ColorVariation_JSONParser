@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - "src/**"
+      - ".github/workflows/build_executable.yml"
 jobs:
   build-windows:
     name: Build for Windows
@@ -23,7 +26,7 @@ jobs:
       - name: Run PyInstaller for BDSP_ColorVariation_JSONParser
         run: |
           set PYTHONOPTIMIZE=2
-          pyinstaller --onefile --name="BDSP_ColorVariation_JSONParser" --console --icon=src\BDSP_ColorVariation_JSONParser\images\json_parser.tga src\BDSP_ColorVariation_JSONParser\json_parser.py
+          pyinstaller --onefile --name="BDSP_ColorVariation_JSONParser" --console --icon=src\BDSP_ColorVariation_JSONParser\images\json_parser.tga src\BDSP_ColorVariation_JSONParser\json_parser.py --add-data="src\BDSP_ColorVariation_JSONParser\images:images"
       - name: Move Executable from dist to root directory
         run: |
           move dist\BDSP_ColorVariation_JSONParser.exe .

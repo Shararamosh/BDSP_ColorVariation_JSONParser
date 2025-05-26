@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - "src/**"
+      - ".github/workflows/build_executable_nuitka.yml"
 jobs:
   build-windows:
     name: Build for Windows
@@ -26,9 +29,12 @@ jobs:
         with:
           nuitka-version: main
           script-name: src/BDSP_ColorVariation_JSONParser/json_parser.py
+          output-file: BDSP_ColorVariation_JSONParser
           mode: app
           enable-plugins: tk-inter
           windows-icon-from-ico: "src/BDSP_ColorVariation_JSONParser/images/json_parser.tga"
+          include-data-dir: |
+            src/BDSP_ColorVariation_JSONParser/images=images
       - name: Move Executable from build to root directory
         run: |
           move build\BDSP_ColorVariation_JSONParser.exe .

@@ -27,7 +27,7 @@ jobs:
       - name: Run Nuitka for BDSP_ColorVariation_JSONParser
         uses: Nuitka/Nuitka-Action@main
         with:
-          nuitka-version: 2.6.9
+          nuitka-version: main
           script-name: src/BDSP_ColorVariation_JSONParser/json_parser.py
           output-file: BDSP_ColorVariation_JSONParser
           mode: app
